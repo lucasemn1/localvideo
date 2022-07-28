@@ -1,7 +1,15 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  BelongsTo,
+  belongsTo,
+  column,
+  ManyToMany,
+  manyToMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import Serie from './Serie'
 import Movie from './Movie'
+import Avatar from './Avatar'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -14,13 +22,16 @@ export default class User extends BaseModel {
   public username: string
 
   @column()
-  public iconPath: string
+  public active: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @belongsTo(() => Avatar)
+  public avatar: BelongsTo<typeof Avatar>
 
   @manyToMany(() => Serie, {
     pivotTable: 'watched_series',
